@@ -1,0 +1,257 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f0fa;
+  color: #333;
+}
+
+/* ─── Header ─── */
+.app-header {
+  background-color: #820AD1;
+  padding: 16px 32px;
+  color: white;
+  box-shadow: 0 2px 8px rgba(130, 10, 209, 0.3);
+}
+
+.header-content {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nubank-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.app-header p {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* ─── Main ─── */
+.app-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ─── Form Section ─── */
+.form-section {
+  width: 100%;
+}
+
+.form-card {
+  background: white;
+  border-radius: 16px;
+  padding: 36px;
+  box-shadow: 0 2px 16px rgba(130, 10, 209, 0.08);
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #820AD1;
+  margin-bottom: 6px;
+}
+
+.form-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.cadastro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.form-input {
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: #333;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  background: #fafafa;
+}
+
+.form-input:focus {
+  border-color: #820AD1;
+  box-shadow: 0 0 0 3px rgba(130, 10, 209, 0.1);
+  background: white;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-submit {
+  background-color: #820AD1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-top: 4px;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #6b09ad;
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.btn-submit:disabled {
+  background-color: #c49ee0;
+  cursor: not-allowed;
+}
+
+/* ─── Alerts ─── */
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.alert-success {
+  background-color: #e6f9f0;
+  color: #1a7a4a;
+  border: 1px solid #a8e6c8;
+}
+
+.alert-error {
+  background-color: #fdecea;
+  color: #b91c1c;
+  border: 1px solid #f5b4b4;
+}
+
+/* ─── List Section ─── */
+.list-section {
+  background: white;
+  border-radius: 16px;
+  padding: 36px;
+  box-shadow: 0 2px 16px rgba(130, 10, 209, 0.08);
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.list-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #820AD1;
+}
+
+.btn-refresh {
+  background: transparent;
+  border: 1.5px solid #820AD1;
+  color: #820AD1;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-refresh:hover {
+  background-color: #f5f0fa;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.clientes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.clientes-table th {
+  text-align: left;
+  padding: 10px 14px;
+  background-color: #f5f0fa;
+  color: #820AD1;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-bottom: 2px solid #e0cff2;
+}
+
+.clientes-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f0eaf8;
+  color: #444;
+}
+
+.clientes-table tr:hover td {
+  background-color: #faf7fe;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 0;
+  color: #aaa;
+  font-size: 15px;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 32px 0;
+  color: #820AD1;
+  font-size: 14px;
+}
+
+/* ─── Footer ─── */
+.app-footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 12px;
+  color: #999;
+}
