@@ -2,55 +2,72 @@ import React from 'react';
 import { cadastrarCliente } from '../api';
 import { FormData } from '../types';
 
-// ============================================================
-// DESAFIO: Implemente o gerenciamento de estado deste formulário
-// ============================================================
-
 function CadastroForm() {
-  // TODO 1: Crie um estado para cada campo do formulário usando useState.
-  //
-  // Exemplo de como criar um estado:
-  //   const [nome, setNome] = React.useState('');
-  //
-  // Campos necessários: cpf, nome, endereco, cep, cidade
-  //
-  // Dica: você também vai precisar de estados para controlar:
-  //   - carregando: boolean (exibir feedback enquanto a requisição acontece)
-  //   - erro: string     (exibir mensagem de erro da API)
-  //   - sucesso: boolean (exibir mensagem de cadastro concluído)
+  const [cpf, setCpf] = React.useState('');
+  const [nome, setNome] = React.useState('');
+  const [endereco, setEndereco] = React.useState('');
+  const [cep, setCep] = React.useState('');
+  const [cidade, setCidade] = React.useState('');
 
+  const [carregando, setCarregando] = React.useState(false);
+  const [erro, setErro] = React.useState('');
+  const [sucesso, setSucesso] = React.useState(false);
 
-  // TODO 2: Implemente a função de submit.
-  //
-  // Esta função deve:
-  //   1. Chamar event.preventDefault() para não recarregar a página
-  //   2. Setar o estado de carregando para true
-  //   3. Limpar qualquer erro anterior
-  //   4. Chamar cadastrarCliente() com os dados do formulário
-  //   5. Em caso de sucesso: limpar os campos e mostrar mensagem de sucesso
-  //   6. Em caso de erro: exibir a mensagem de erro no formulário
-  //   7. Setar o estado de carregando para false no final (sucesso ou erro)
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Escreva sua implementação aqui
+
+    try {
+      setCarregando(true);
+      setErro('');
+      setSucesso(false);
+
+      const dados: FormData = {
+        cpf,
+        nome,
+        endereco,
+        cep,
+        cidade,
+      };
+
+      await cadastrarCliente(dados);
+
+      setCpf('');
+      setNome('');
+      setEndereco('');
+      setCep('');
+      setCidade('');
+      setSucesso(true);
+    } catch (error) {
+      if (error instanceof Error) {
+        setErro(error.message);
+      } else {
+        setErro('Erro ao cadastrar cliente');
+      }
+    } finally {
+      setCarregando(false);
+    }
   };
 
-  // TODO 3: Implemente a função de formatação do CPF.
-  //
-  // Ao digitar, formate automaticamente para o padrão 000.000.000-00.
-  // Dica: use replace() para remover caracteres não numéricos
-  // e depois aplique a máscara conforme o comprimento da string.
   const formatarCPF = (valor: string): string => {
-    // Escreva sua implementação aqui
-    return valor;
+    const numeros = valor.replace(/\D/g, '').slice(0, 11);
+
+    if (numeros.length <= 3) return numeros;
+    if (numeros.length <= 6) {
+      return numeros.replace(/(\d{3})(\d+)/, '$1.$2');
+    }
+    if (numeros.length <= 9) {
+      return numeros.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+    }
+
+    return numeros.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
   };
 
-  // TODO 4: Implemente a função de formatação do CEP.
-  //
-  // Ao digitar, formate automaticamente para o padrão 00000-000.
   const formatarCEP = (valor: string): string => {
-    // Escreva sua implementação aqui
-    return valor;
+    const numeros = valor.replace(/\D/g, '').slice(0, 8);
+
+    if (numeros.length <= 5) return numeros;
+
+    return numeros.replace(/(\d{5})(\d+)/, '$1-$2');
   };
 
   return (
@@ -61,33 +78,32 @@ function CadastroForm() {
           Preencha os dados abaixo para se tornar um cliente Nubank.
         </p>
 
-        {/* TODO 5: Exiba a mensagem de sucesso condicionalmente.
-            Mostre este bloco apenas quando o estado "sucesso" for true. */}
-        <div className="alert alert-success">
-          ✅ Cliente cadastrado com sucesso!
-        </div>
+        {sucesso && (
+          <div className="alert alert-success">
+            ✅ Cliente cadastrado com sucesso!
+          </div>
+        )}
 
-        {/* TODO 6: Exiba a mensagem de erro condicionalmente.
-            Mostre este bloco apenas quando o estado "erro" tiver uma mensagem. */}
-        <div className="alert alert-error">
-          ❌ Erro aqui
-        </div>
+        {erro && (
+          <div className="alert alert-error">
+            ❌ {erro}
+          </div>
+        )}
 
-        {/* TODO 7: Adicione o onSubmit={handleSubmit} neste form */}
-        <form className="cadastro-form">
-
+        <form className="cadastro-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="cpf">CPF</label>
-            {/* TODO 8: Conecte os campos ao estado:
-                - value={cpf}
-                - onChange para chamar setCpf com o valor formatado pelo formatarCPF()
-                Faça o mesmo para todos os outros campos abaixo. */}
             <input
               id="cpf"
               type="text"
               placeholder="000.000.000-00"
               maxLength={14}
               className="form-input"
+              value={cpf}
+              onChange={(e) => {
+                setCpf(formatarCPF(e.target.value));
+                setSucesso(false);
+              }}
             />
           </div>
 
@@ -98,6 +114,11 @@ function CadastroForm() {
               type="text"
               placeholder="Digite seu nome completo"
               className="form-input"
+              value={nome}
+              onChange={(e) => {
+                setNome(e.target.value);
+                setSucesso(false);
+              }}
             />
           </div>
 
@@ -108,6 +129,11 @@ function CadastroForm() {
               type="text"
               placeholder="Rua, número, complemento"
               className="form-input"
+              value={endereco}
+              onChange={(e) => {
+                setEndereco(e.target.value);
+                setSucesso(false);
+              }}
             />
           </div>
 
@@ -120,6 +146,11 @@ function CadastroForm() {
                 placeholder="00000-000"
                 maxLength={9}
                 className="form-input"
+                value={cep}
+                onChange={(e) => {
+                  setCep(formatarCEP(e.target.value));
+                  setSucesso(false);
+                }}
               />
             </div>
 
@@ -130,16 +161,18 @@ function CadastroForm() {
                 type="text"
                 placeholder="Sua cidade"
                 className="form-input"
+                value={cidade}
+                onChange={(e) => {
+                  setCidade(e.target.value);
+                  setSucesso(false);
+                }}
               />
             </div>
           </div>
 
-          {/* TODO 9: Desabilite o botão quando o estado "carregando" for true
-              e troque o texto para "Cadastrando..." */}
-          <button type="submit" className="btn-submit">
-            Cadastrar
+          <button type="submit" className="btn-submit" disabled={carregando}>
+            {carregando ? 'Cadastrando...' : 'Cadastrar'}
           </button>
-
         </form>
       </div>
     </section>
